@@ -30,7 +30,6 @@ public class MachineInterpreter {
 				{
 					
 					Integer conValue = t.getConditionComparedValue();
-					System.out.println(conValue);
 					
 					Integer conVar = machine.getIntegers().get(t.getConditionVariableName());
 					
