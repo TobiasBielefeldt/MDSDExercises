@@ -5,15 +5,13 @@ package dk.sdu.mmmi.mdsd.generator;
 
 import com.google.common.collect.Iterators;
 import dk.sdu.mmmi.mdsd.math.Div;
-import dk.sdu.mmmi.mdsd.math.Exp;
-import dk.sdu.mmmi.mdsd.math.ExpOp;
+import dk.sdu.mmmi.mdsd.math.Expression;
 import dk.sdu.mmmi.mdsd.math.MathExp;
 import dk.sdu.mmmi.mdsd.math.Minus;
 import dk.sdu.mmmi.mdsd.math.Mult;
 import dk.sdu.mmmi.mdsd.math.Num;
 import dk.sdu.mmmi.mdsd.math.Par;
 import dk.sdu.mmmi.mdsd.math.Plus;
-import dk.sdu.mmmi.mdsd.math.Primary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -40,68 +38,58 @@ public class MathGenerator extends AbstractGenerator {
   }
   
   public static Map<String, Integer> compute(final MathExp math) {
-    int value = MathGenerator.computeExp(math.getExp());
+    Expression _exp = math.getExp();
+    HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
+    int value = MathGenerator.computeExp(_exp, _hashMap);
     String name = math.getName();
     MathGenerator.variables.put(name, Integer.valueOf(value));
     return MathGenerator.variables;
   }
   
-  public static int computeExp(final Exp exp) {
-    int _xblockexpression = (int) 0;
-    {
-      final int left = MathGenerator.computePrim(exp.getLeft());
-      int _switchResult = (int) 0;
-      ExpOp _operator = exp.getOperator();
-      boolean _matched = false;
-      if (_operator instanceof Plus) {
-        _matched=true;
-        int _computeExp = MathGenerator.computeExp(exp.getRight());
-        _switchResult = (left + _computeExp);
-      }
-      if (!_matched) {
-        if (_operator instanceof Minus) {
-          _matched=true;
-          int _computeExp = MathGenerator.computeExp(exp.getRight());
-          _switchResult = (left - _computeExp);
-        }
-      }
-      if (!_matched) {
-        if (_operator instanceof Mult) {
-          _matched=true;
-          int _computeExp = MathGenerator.computeExp(exp.getRight());
-          _switchResult = (left * _computeExp);
-        }
-      }
-      if (!_matched) {
-        if (_operator instanceof Div) {
-          _matched=true;
-          int _computeExp = MathGenerator.computeExp(exp.getRight());
-          _switchResult = (left / _computeExp);
-        }
-      }
-      if (!_matched) {
-        _switchResult = left;
-      }
-      _xblockexpression = _switchResult;
-    }
-    return _xblockexpression;
-  }
-  
-  public static int computePrim(final Primary prim) {
+  public static int computeExp(final Expression exp, final Map<String, Integer> env) {
     int _switchResult = (int) 0;
     boolean _matched = false;
-    if (prim instanceof Num) {
+    if (exp instanceof Plus) {
       _matched=true;
-      _switchResult = ((Num)prim).getValue();
+      int _computeExp = MathGenerator.computeExp(((Plus)exp).getLeft(), env);
+      int _computeExp_1 = MathGenerator.computeExp(((Plus)exp).getRight(), env);
+      _switchResult = (_computeExp + _computeExp_1);
     }
     if (!_matched) {
-      if (prim instanceof Par) {
+      if (exp instanceof Minus) {
         _matched=true;
-        _switchResult = MathGenerator.computeExp(((Par)prim).getExp());
+        int _computeExp = MathGenerator.computeExp(((Minus)exp).getLeft(), env);
+        int _computeExp_1 = MathGenerator.computeExp(((Minus)exp).getRight(), env);
+        _switchResult = (_computeExp - _computeExp_1);
       }
     }
     if (!_matched) {
-      throw new Error("Don\'t");
+      if (exp instanceof Mult) {
+        _matched=true;
+        int _computeExp = MathGenerator.computeExp(((Mult)exp).getLeft(), env);
+        int _computeExp_1 = MathGenerator.computeExp(((Mult)exp).getRight(), env);
+        _switchResult = (_computeExp * _computeExp_1);
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Div) {
+        _matched=true;
+        int _computeExp = MathGenerator.computeExp(((Div)exp).getLeft(), env);
+        int _computeExp_1 = MathGenerator.computeExp(((Div)exp).getRight(), env);
+        _switchResult = (_computeExp / _computeExp_1);
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Num) {
+        _matched=true;
+        _switchResult = ((Num)exp).getValue();
+      }
+    }
+    if (!_matched) {
+      if (exp instanceof Par) {
+        _matched=true;
+        _switchResult = MathGenerator.computeExp(((Par)exp).getExp(), env);
+      }
     }
     return _switchResult;
   }

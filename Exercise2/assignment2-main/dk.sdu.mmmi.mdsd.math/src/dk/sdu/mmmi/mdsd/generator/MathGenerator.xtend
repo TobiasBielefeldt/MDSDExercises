@@ -4,7 +4,6 @@
 package dk.sdu.mmmi.mdsd.generator
 
 import dk.sdu.mmmi.mdsd.math.Div
-import dk.sdu.mmmi.mdsd.math.Exp
 import dk.sdu.mmmi.mdsd.math.MathExp
 import dk.sdu.mmmi.mdsd.math.Minus
 import dk.sdu.mmmi.mdsd.math.Mult
@@ -16,7 +15,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import dk.sdu.mmmi.mdsd.math.Primary
+import dk.sdu.mmmi.mdsd.math.Expression
 import dk.sdu.mmmi.mdsd.math.Num
 import dk.sdu.mmmi.mdsd.math.Par
 
@@ -43,7 +42,7 @@ class MathGenerator extends AbstractGenerator {
 	//
 	
 	def static compute(MathExp math) { 
-		var value = math.exp.computeExp
+		var value = math.exp.computeExp(new HashMap<String,Integer>)
 		var name = math.name
 		
 		variables.put(name,value)
@@ -51,22 +50,14 @@ class MathGenerator extends AbstractGenerator {
 		return variables
 	}
 	
-	def static int computeExp(Exp exp) {
-		val left = exp.left.computePrim
-		switch exp.operator {
-			Plus: left+exp.right.computeExp
-			Minus: left-exp.right.computeExp
-			Mult: left*exp.right.computeExp
-			Div: left/exp.right.computeExp
-			default: left
-		}
-	}
-	
-	def static int computePrim(Primary prim) { 
-		switch prim{
-			Num: prim.value
-			Par: prim.exp.computeExp
-			default: throw new Error("Don't")
+	def static int computeExp(Expression exp,Map<String,Integer> env) {
+		switch exp {
+			Plus: exp.left.computeExp(env)+exp.right.computeExp(env)
+			Minus: exp.left.computeExp(env)-exp.right.computeExp(env)
+			Mult: exp.left.computeExp(env)*exp.right.computeExp(env)
+			Div: exp.left.computeExp(env)/exp.right.computeExp(env)
+			Num: exp.value
+			Par: exp.exp.computeExp(env)
 		}
 	}
 	

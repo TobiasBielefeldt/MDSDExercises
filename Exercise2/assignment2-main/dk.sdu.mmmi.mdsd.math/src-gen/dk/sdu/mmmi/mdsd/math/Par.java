@@ -27,12 +27,12 @@ public interface Par extends Expression
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Exp</em>' containment reference.
-   * @see #setExp(Exp)
+   * @see #setExp(Expression)
    * @see dk.sdu.mmmi.mdsd.math.MathPackage#getPar_Exp()
    * @model containment="true"
    * @generated
    */
-  Exp getExp();
+  Expression getExp();
 
   /**
    * Sets the value of the '{@link dk.sdu.mmmi.mdsd.math.Par#getExp <em>Exp</em>}' containment reference.
@@ -42,6 +42,6 @@ public interface Par extends Expression
    * @see #getExp()
    * @generated
    */
-  void setExp(Exp value);
+  void setExp(Expression value);
 
 } // Par

@@ -3,7 +3,7 @@
  */
 package dk.sdu.mmmi.mdsd.math.impl;
 
-import dk.sdu.mmmi.mdsd.math.Exp;
+import dk.sdu.mmmi.mdsd.math.Expression;
 import dk.sdu.mmmi.mdsd.math.MathExp;
 import dk.sdu.mmmi.mdsd.math.MathPackage;
 
@@ -60,7 +60,7 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * @generated
    * @ordered
    */
-  protected Exp exp;
+  protected Expression exp;
 
   /**
    * <!-- begin-user-doc -->
@@ -114,7 +114,7 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * @generated
    */
   @Override
-  public Exp getExp()
+  public Expression getExp()
   {
     return exp;
   }
@@ -124,9 +124,9 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetExp(Exp newExp, NotificationChain msgs)
+  public NotificationChain basicSetExp(Expression newExp, NotificationChain msgs)
   {
-    Exp oldExp = exp;
+    Expression oldExp = exp;
     exp = newExp;
     if (eNotificationRequired())
     {
@@ -142,7 +142,7 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
    * @generated
    */
   @Override
-  public void setExp(Exp newExp)
+  public void setExp(Expression newExp)
   {
     if (newExp != exp)
     {
@@ -206,7 +206,7 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
         setName((String)newValue);
         return;
       case MathPackage.MATH_EXP__EXP:
-        setExp((Exp)newValue);
+        setExp((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -226,7 +226,7 @@ public class MathExpImpl extends MinimalEObjectImpl.Container implements MathExp
         setName(NAME_EDEFAULT);
         return;
       case MathPackage.MATH_EXP__EXP:
-        setExp((Exp)null);
+        setExp((Expression)null);
         return;
     }
     super.eUnset(featureID);

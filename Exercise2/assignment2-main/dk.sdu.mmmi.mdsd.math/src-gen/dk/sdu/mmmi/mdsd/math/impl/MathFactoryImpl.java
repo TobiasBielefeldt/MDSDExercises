@@ -66,9 +66,6 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
     switch (eClass.getClassifierID())
     {
       case MathPackage.MATH_EXP: return createMathExp();
-      case MathPackage.EXP: return createExp();
-      case MathPackage.EXP_OP: return createExpOp();
-      case MathPackage.PRIMARY: return createPrimary();
       case MathPackage.EXPRESSION: return createExpression();
       case MathPackage.PLUS: return createPlus();
       case MathPackage.MINUS: return createMinus();
@@ -76,7 +73,6 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
       case MathPackage.DIV: return createDiv();
       case MathPackage.PAR: return createPar();
       case MathPackage.NUM: return createNum();
-      case MathPackage.REF: return createref();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -92,42 +88,6 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
   {
     MathExpImpl mathExp = new MathExpImpl();
     return mathExp;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Exp createExp()
-  {
-    ExpImpl exp = new ExpImpl();
-    return exp;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ExpOp createExpOp()
-  {
-    ExpOpImpl expOp = new ExpOpImpl();
-    return expOp;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Primary createPrimary()
-  {
-    PrimaryImpl primary = new PrimaryImpl();
-    return primary;
   }
 
   /**
@@ -212,18 +172,6 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
   {
     NumImpl num = new NumImpl();
     return num;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ref createref()
-  {
-    refImpl ref = new refImpl();
-    return ref;
   }
 
   /**

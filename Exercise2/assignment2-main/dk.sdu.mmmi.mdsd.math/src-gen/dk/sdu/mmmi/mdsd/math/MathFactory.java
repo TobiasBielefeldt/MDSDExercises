@@ -33,33 +33,6 @@ public interface MathFactory extends EFactory
   MathExp createMathExp();
 
   /**
-   * Returns a new object of class '<em>Exp</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Exp</em>'.
-   * @generated
-   */
-  Exp createExp();
-
-  /**
-   * Returns a new object of class '<em>Exp Op</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Exp Op</em>'.
-   * @generated
-   */
-  ExpOp createExpOp();
-
-  /**
-   * Returns a new object of class '<em>Primary</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Primary</em>'.
-   * @generated
-   */
-  Primary createPrimary();
-
-  /**
    * Returns a new object of class '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -121,15 +94,6 @@ public interface MathFactory extends EFactory
    * @generated
    */
   Num createNum();
-
-  /**
-   * Returns a new object of class '<em>ref</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>ref</em>'.
-   * @generated
-   */
-  ref createref();
 
   /**
    * Returns the package supported by this factory.

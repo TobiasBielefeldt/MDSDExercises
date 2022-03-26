@@ -81,21 +81,6 @@ public class MathAdapterFactory extends AdapterFactoryImpl
         return createMathExpAdapter();
       }
       @Override
-      public Adapter caseExp(Exp object)
-      {
-        return createExpAdapter();
-      }
-      @Override
-      public Adapter caseExpOp(ExpOp object)
-      {
-        return createExpOpAdapter();
-      }
-      @Override
-      public Adapter casePrimary(Primary object)
-      {
-        return createPrimaryAdapter();
-      }
-      @Override
       public Adapter caseExpression(Expression object)
       {
         return createExpressionAdapter();
@@ -131,11 +116,6 @@ public class MathAdapterFactory extends AdapterFactoryImpl
         return createNumAdapter();
       }
       @Override
-      public Adapter caseref(ref object)
-      {
-        return createrefAdapter();
-      }
-      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -168,51 +148,6 @@ public class MathAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMathExpAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.math.Exp <em>Exp</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see dk.sdu.mmmi.mdsd.math.Exp
-   * @generated
-   */
-  public Adapter createExpAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.math.ExpOp <em>Exp Op</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see dk.sdu.mmmi.mdsd.math.ExpOp
-   * @generated
-   */
-  public Adapter createExpOpAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.math.Primary <em>Primary</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see dk.sdu.mmmi.mdsd.math.Primary
-   * @generated
-   */
-  public Adapter createPrimaryAdapter()
   {
     return null;
   }
@@ -318,21 +253,6 @@ public class MathAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNumAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link dk.sdu.mmmi.mdsd.math.ref <em>ref</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see dk.sdu.mmmi.mdsd.math.ref
-   * @generated
-   */
-  public Adapter createrefAdapter()
   {
     return null;
   }

@@ -8,16 +8,16 @@ MathExp:
 	'var' name=ID '=' exp=Exp
 ;
 
-Exp:	
-	left=Primary (operator=ExpOp right=Exp)?
+Exp returns Expression:
+	Term (( '+' {Plus.left=current} | '-' {Minus.left=current} ) right=Term )*
 ;
 
-ExpOp:
-	{Plus} '+' | {Minus} '-'	 | {Mult} '*' | {Div} '/'	
+Term returns Expression:
+	Primary (('*'{Mult.left= current}  | '/' {Div.left= current} ) right=Primary)*
 ;
 
-Primary:
-	Number | Parenthesis | VariableUse
+Primary returns Expression:
+	Number | Parenthesis
 ;
 
 Parenthesis returns Expression:
@@ -26,8 +26,4 @@ Parenthesis returns Expression:
 
 Number returns Expression:
 	{Num} value=INT
-;
-
-VariableUse returns Expression:
-	{ref} ref = [MathExp]
 ;

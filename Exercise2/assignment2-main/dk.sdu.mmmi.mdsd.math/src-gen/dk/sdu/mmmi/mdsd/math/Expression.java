@@ -3,6 +3,7 @@
  */
 package dk.sdu.mmmi.mdsd.math;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +15,6 @@ package dk.sdu.mmmi.mdsd.math;
  * @model
  * @generated
  */
-public interface Expression extends Primary
+public interface Expression extends EObject
 {
 } // Expression

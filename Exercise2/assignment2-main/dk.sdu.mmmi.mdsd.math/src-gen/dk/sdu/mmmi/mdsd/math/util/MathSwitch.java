@@ -80,32 +80,10 @@ public class MathSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MathPackage.EXP:
-      {
-        Exp exp = (Exp)theEObject;
-        T result = caseExp(exp);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MathPackage.EXP_OP:
-      {
-        ExpOp expOp = (ExpOp)theEObject;
-        T result = caseExpOp(expOp);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MathPackage.PRIMARY:
-      {
-        Primary primary = (Primary)theEObject;
-        T result = casePrimary(primary);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case MathPackage.EXPRESSION:
       {
         Expression expression = (Expression)theEObject;
         T result = caseExpression(expression);
-        if (result == null) result = casePrimary(expression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -113,7 +91,7 @@ public class MathSwitch<T> extends Switch<T>
       {
         Plus plus = (Plus)theEObject;
         T result = casePlus(plus);
-        if (result == null) result = caseExpOp(plus);
+        if (result == null) result = caseExpression(plus);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -121,7 +99,7 @@ public class MathSwitch<T> extends Switch<T>
       {
         Minus minus = (Minus)theEObject;
         T result = caseMinus(minus);
-        if (result == null) result = caseExpOp(minus);
+        if (result == null) result = caseExpression(minus);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -129,7 +107,7 @@ public class MathSwitch<T> extends Switch<T>
       {
         Mult mult = (Mult)theEObject;
         T result = caseMult(mult);
-        if (result == null) result = caseExpOp(mult);
+        if (result == null) result = caseExpression(mult);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -137,7 +115,7 @@ public class MathSwitch<T> extends Switch<T>
       {
         Div div = (Div)theEObject;
         T result = caseDiv(div);
-        if (result == null) result = caseExpOp(div);
+        if (result == null) result = caseExpression(div);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -146,7 +124,6 @@ public class MathSwitch<T> extends Switch<T>
         Par par = (Par)theEObject;
         T result = casePar(par);
         if (result == null) result = caseExpression(par);
-        if (result == null) result = casePrimary(par);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -155,16 +132,6 @@ public class MathSwitch<T> extends Switch<T>
         Num num = (Num)theEObject;
         T result = caseNum(num);
         if (result == null) result = caseExpression(num);
-        if (result == null) result = casePrimary(num);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MathPackage.REF:
-      {
-        ref ref = (ref)theEObject;
-        T result = caseref(ref);
-        if (result == null) result = caseExpression(ref);
-        if (result == null) result = casePrimary(ref);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -184,54 +151,6 @@ public class MathSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMathExp(MathExp object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Exp</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Exp</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseExp(Exp object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Exp Op</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Exp Op</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseExpOp(ExpOp object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Primary</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Primary</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casePrimary(Primary object)
   {
     return null;
   }
@@ -344,22 +263,6 @@ public class MathSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseNum(Num object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>ref</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>ref</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseref(ref object)
   {
     return null;
   }

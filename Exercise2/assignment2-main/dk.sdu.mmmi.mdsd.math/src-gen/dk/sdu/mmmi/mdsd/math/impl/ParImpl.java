@@ -3,7 +3,7 @@
  */
 package dk.sdu.mmmi.mdsd.math.impl;
 
-import dk.sdu.mmmi.mdsd.math.Exp;
+import dk.sdu.mmmi.mdsd.math.Expression;
 import dk.sdu.mmmi.mdsd.math.MathPackage;
 import dk.sdu.mmmi.mdsd.math.Par;
 
@@ -38,7 +38,7 @@ public class ParImpl extends ExpressionImpl implements Par
    * @generated
    * @ordered
    */
-  protected Exp exp;
+  protected Expression exp;
 
   /**
    * <!-- begin-user-doc -->
@@ -67,7 +67,7 @@ public class ParImpl extends ExpressionImpl implements Par
    * @generated
    */
   @Override
-  public Exp getExp()
+  public Expression getExp()
   {
     return exp;
   }
@@ -77,9 +77,9 @@ public class ParImpl extends ExpressionImpl implements Par
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetExp(Exp newExp, NotificationChain msgs)
+  public NotificationChain basicSetExp(Expression newExp, NotificationChain msgs)
   {
-    Exp oldExp = exp;
+    Expression oldExp = exp;
     exp = newExp;
     if (eNotificationRequired())
     {
@@ -95,7 +95,7 @@ public class ParImpl extends ExpressionImpl implements Par
    * @generated
    */
   @Override
-  public void setExp(Exp newExp)
+  public void setExp(Expression newExp)
   {
     if (newExp != exp)
     {
@@ -154,7 +154,7 @@ public class ParImpl extends ExpressionImpl implements Par
     switch (featureID)
     {
       case MathPackage.PAR__EXP:
-        setExp((Exp)newValue);
+        setExp((Expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,7 +171,7 @@ public class ParImpl extends ExpressionImpl implements Par
     switch (featureID)
     {
       case MathPackage.PAR__EXP:
-        setExp((Exp)null);
+        setExp((Expression)null);
         return;
     }
     super.eUnset(featureID);
