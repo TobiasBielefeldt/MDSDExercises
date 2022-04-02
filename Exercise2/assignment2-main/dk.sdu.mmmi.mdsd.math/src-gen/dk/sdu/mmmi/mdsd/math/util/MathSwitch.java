@@ -80,6 +80,13 @@ public class MathSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MathPackage.ONE_MATH:
+      {
+        OneMath oneMath = (OneMath)theEObject;
+        T result = caseOneMath(oneMath);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MathPackage.EXPRESSION:
       {
         Expression expression = (Expression)theEObject;
@@ -119,6 +126,22 @@ public class MathSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MathPackage.VAR:
+      {
+        Var var = (Var)theEObject;
+        T result = caseVar(var);
+        if (result == null) result = caseExpression(var);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MathPackage.LET:
+      {
+        Let let = (Let)theEObject;
+        T result = caseLet(let);
+        if (result == null) result = caseExpression(let);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MathPackage.PAR:
       {
         Par par = (Par)theEObject;
@@ -151,6 +174,22 @@ public class MathSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMathExp(MathExp object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>One Math</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>One Math</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseOneMath(OneMath object)
   {
     return null;
   }
@@ -231,6 +270,38 @@ public class MathSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseDiv(Div object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVar(Var object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Let</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Let</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseLet(Let object)
   {
     return null;
   }

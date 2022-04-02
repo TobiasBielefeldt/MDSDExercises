@@ -66,11 +66,14 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
     switch (eClass.getClassifierID())
     {
       case MathPackage.MATH_EXP: return createMathExp();
+      case MathPackage.ONE_MATH: return createOneMath();
       case MathPackage.EXPRESSION: return createExpression();
       case MathPackage.PLUS: return createPlus();
       case MathPackage.MINUS: return createMinus();
       case MathPackage.MULT: return createMult();
       case MathPackage.DIV: return createDiv();
+      case MathPackage.VAR: return createVar();
+      case MathPackage.LET: return createLet();
       case MathPackage.PAR: return createPar();
       case MathPackage.NUM: return createNum();
       default:
@@ -88,6 +91,18 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
   {
     MathExpImpl mathExp = new MathExpImpl();
     return mathExp;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public OneMath createOneMath()
+  {
+    OneMathImpl oneMath = new OneMathImpl();
+    return oneMath;
   }
 
   /**
@@ -148,6 +163,30 @@ public class MathFactoryImpl extends EFactoryImpl implements MathFactory
   {
     DivImpl div = new DivImpl();
     return div;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Var createVar()
+  {
+    VarImpl var = new VarImpl();
+    return var;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Let createLet()
+  {
+    LetImpl let = new LetImpl();
+    return let;
   }
 
   /**

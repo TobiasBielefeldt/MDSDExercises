@@ -3,6 +3,14 @@
  */
 package dk.sdu.mmmi.mdsd.scoping;
 
+import dk.sdu.mmmi.mdsd.math.MathExp;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.Scopes;
+import org.eclipse.xtext.xtext.generator.parser.antlr.splitting.simpleExpressions.Comparison;
+
 /**
  * This class contains custom scoping description.
  * 
@@ -11,4 +19,14 @@ package dk.sdu.mmmi.mdsd.scoping;
  */
 @SuppressWarnings("all")
 public class MathScopeProvider extends AbstractMathScopeProvider {
+  @Override
+  public IScope getScope(final EObject context, final EReference reference) {
+    boolean _matched = false;
+    if (context instanceof Comparison) {
+      _matched=true;
+      final MathExp math = EcoreUtil2.<MathExp>getContainerOfType(context, MathExp.class);
+      return Scopes.scopeFor(math.getMathExp());
+    }
+    return super.getScope(context, reference);
+  }
 }

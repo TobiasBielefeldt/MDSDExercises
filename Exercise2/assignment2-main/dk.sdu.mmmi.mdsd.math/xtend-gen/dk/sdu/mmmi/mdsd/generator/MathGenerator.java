@@ -6,20 +6,25 @@ package dk.sdu.mmmi.mdsd.generator;
 import com.google.common.collect.Iterators;
 import dk.sdu.mmmi.mdsd.math.Div;
 import dk.sdu.mmmi.mdsd.math.Expression;
+import dk.sdu.mmmi.mdsd.math.Let;
 import dk.sdu.mmmi.mdsd.math.MathExp;
 import dk.sdu.mmmi.mdsd.math.Minus;
 import dk.sdu.mmmi.mdsd.math.Mult;
 import dk.sdu.mmmi.mdsd.math.Num;
+import dk.sdu.mmmi.mdsd.math.OneMath;
 import dk.sdu.mmmi.mdsd.math.Par;
 import dk.sdu.mmmi.mdsd.math.Plus;
+import dk.sdu.mmmi.mdsd.math.Var;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 
 /**
  * Generates code from your model files on save.
@@ -30,6 +35,8 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 public class MathGenerator extends AbstractGenerator {
   private static Map<String, Integer> variables = new HashMap<String, Integer>();
   
+  private static Map<String, Integer> letVariables = new HashMap<String, Integer>();
+  
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     final MathExp math = Iterators.<MathExp>filter(resource.getAllContents(), MathExp.class).next();
@@ -37,61 +44,136 @@ public class MathGenerator extends AbstractGenerator {
     this.displayPanel(result);
   }
   
-  public static Map<String, Integer> compute(final MathExp math) {
-    Expression _exp = math.getExp();
-    HashMap<String, Integer> _hashMap = new HashMap<String, Integer>();
-    int value = MathGenerator.computeExp(_exp, _hashMap);
-    String name = math.getName();
-    MathGenerator.variables.put(name, Integer.valueOf(value));
-    return MathGenerator.variables;
+  public static Map<String, Integer> compute(final MathExp mathExp) {
+    Map<String, Integer> _xblockexpression = null;
+    {
+      EList<OneMath> _mathExp = mathExp.getMathExp();
+      for (final OneMath math : _mathExp) {
+        {
+          int value = MathGenerator.computeExp(math.getExp());
+          String name = math.getName();
+          MathGenerator.variables.put(name, Integer.valueOf(value));
+          MathGenerator.letVariables.clear();
+        }
+      }
+      _xblockexpression = MathGenerator.variables;
+    }
+    return _xblockexpression;
   }
   
-  public static int computeExp(final Expression exp, final Map<String, Integer> env) {
-    int _switchResult = (int) 0;
-    boolean _matched = false;
-    if (exp instanceof Plus) {
-      _matched=true;
-      int _computeExp = MathGenerator.computeExp(((Plus)exp).getLeft(), env);
-      int _computeExp_1 = MathGenerator.computeExp(((Plus)exp).getRight(), env);
-      _switchResult = (_computeExp + _computeExp_1);
-    }
-    if (!_matched) {
-      if (exp instanceof Minus) {
+  public static int computeExp(final Expression exp) {
+    try {
+      Integer _switchResult = null;
+      boolean _matched = false;
+      if (exp instanceof Plus) {
         _matched=true;
-        int _computeExp = MathGenerator.computeExp(((Minus)exp).getLeft(), env);
-        int _computeExp_1 = MathGenerator.computeExp(((Minus)exp).getRight(), env);
-        _switchResult = (_computeExp - _computeExp_1);
+        int _computeExp = MathGenerator.computeExp(((Plus)exp).getLeft());
+        int _computeExp_1 = MathGenerator.computeExp(((Plus)exp).getRight());
+        _switchResult = Integer.valueOf((_computeExp + _computeExp_1));
       }
-    }
-    if (!_matched) {
-      if (exp instanceof Mult) {
-        _matched=true;
-        int _computeExp = MathGenerator.computeExp(((Mult)exp).getLeft(), env);
-        int _computeExp_1 = MathGenerator.computeExp(((Mult)exp).getRight(), env);
-        _switchResult = (_computeExp * _computeExp_1);
+      if (!_matched) {
+        if (exp instanceof Minus) {
+          _matched=true;
+          int _computeExp = MathGenerator.computeExp(((Minus)exp).getLeft());
+          int _computeExp_1 = MathGenerator.computeExp(((Minus)exp).getRight());
+          _switchResult = Integer.valueOf((_computeExp - _computeExp_1));
+        }
       }
-    }
-    if (!_matched) {
-      if (exp instanceof Div) {
-        _matched=true;
-        int _computeExp = MathGenerator.computeExp(((Div)exp).getLeft(), env);
-        int _computeExp_1 = MathGenerator.computeExp(((Div)exp).getRight(), env);
-        _switchResult = (_computeExp / _computeExp_1);
+      if (!_matched) {
+        if (exp instanceof Mult) {
+          _matched=true;
+          int _computeExp = MathGenerator.computeExp(((Mult)exp).getLeft());
+          int _computeExp_1 = MathGenerator.computeExp(((Mult)exp).getRight());
+          _switchResult = Integer.valueOf((_computeExp * _computeExp_1));
+        }
       }
-    }
-    if (!_matched) {
-      if (exp instanceof Num) {
-        _matched=true;
-        _switchResult = ((Num)exp).getValue();
+      if (!_matched) {
+        if (exp instanceof Div) {
+          _matched=true;
+          int _computeExp = MathGenerator.computeExp(((Div)exp).getLeft());
+          int _computeExp_1 = MathGenerator.computeExp(((Div)exp).getRight());
+          _switchResult = Integer.valueOf((_computeExp / _computeExp_1));
+        }
       }
-    }
-    if (!_matched) {
-      if (exp instanceof Par) {
-        _matched=true;
-        _switchResult = MathGenerator.computeExp(((Par)exp).getExp(), env);
+      if (!_matched) {
+        if (exp instanceof Num) {
+          _matched=true;
+          _switchResult = Integer.valueOf(((Num)exp).getValue());
+        }
       }
+      if (!_matched) {
+        if (exp instanceof Par) {
+          _matched=true;
+          _switchResult = Integer.valueOf(MathGenerator.computeExp(((Par)exp).getExp()));
+        }
+      }
+      if (!_matched) {
+        if (exp instanceof Var) {
+          _matched=true;
+          Integer _xifexpression = null;
+          Integer _get = MathGenerator.letVariables.get(((Var)exp).getId());
+          boolean _tripleNotEquals = (_get != null);
+          if (_tripleNotEquals) {
+            _xifexpression = MathGenerator.letVariables.get(((Var)exp).getId());
+          } else {
+            Integer _xifexpression_1 = null;
+            Integer _get_1 = MathGenerator.variables.get(((Var)exp).getId());
+            boolean _tripleNotEquals_1 = (_get_1 != null);
+            if (_tripleNotEquals_1) {
+              _xifexpression_1 = MathGenerator.variables.get(((Var)exp).getId());
+            }
+            _xifexpression = _xifexpression_1;
+          }
+          _switchResult = _xifexpression;
+        }
+      }
+      if (!_matched) {
+        if (exp instanceof Let) {
+          _matched=true;
+          int _xblockexpression = (int) 0;
+          {
+            int binding = MathGenerator.computeExp(((Let)exp).getBind());
+            MathGenerator.letVariables.put(((Let)exp).getVar(), Integer.valueOf(binding));
+            int _switchResult_1 = (int) 0;
+            Expression _body = ((Let)exp).getBody();
+            boolean _matched_1 = false;
+            if (_body instanceof Plus) {
+              _matched_1=true;
+              _switchResult_1 = MathGenerator.computeExp(((Let)exp).getBody());
+            }
+            if (!_matched_1) {
+              if (_body instanceof Minus) {
+                _matched_1=true;
+                _switchResult_1 = MathGenerator.computeExp(((Let)exp).getBody());
+              }
+            }
+            if (!_matched_1) {
+              if (_body instanceof Mult) {
+                _matched_1=true;
+                _switchResult_1 = MathGenerator.computeExp(((Let)exp).getBody());
+              }
+            }
+            if (!_matched_1) {
+              if (_body instanceof Div) {
+                _matched_1=true;
+                _switchResult_1 = MathGenerator.computeExp(((Let)exp).getBody());
+              }
+            }
+            if (!_matched_1) {
+              _switchResult_1 = binding;
+            }
+            _xblockexpression = _switchResult_1;
+          }
+          _switchResult = Integer.valueOf(_xblockexpression);
+        }
+      }
+      if (!_matched) {
+        throw new Exception("Should not get down here");
+      }
+      return (_switchResult).intValue();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    return _switchResult;
   }
   
   public void displayPanel(final Map<String, Integer> result) {

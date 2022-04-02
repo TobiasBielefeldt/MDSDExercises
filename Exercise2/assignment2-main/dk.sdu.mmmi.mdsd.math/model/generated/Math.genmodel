@@ -7,8 +7,11 @@
   <genPackages prefix="Math" basePackage="dk.sdu.mmmi.mdsd" disposableProviderFactory="true"
       fileExtensions="math" ecorePackage="Math.ecore#/">
     <genClasses ecoreClass="Math.ecore#//MathExp">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//MathExp/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//MathExp/exp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//MathExp/mathExp"/>
+    </genClasses>
+    <genClasses ecoreClass="Math.ecore#//OneMath">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//OneMath/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//OneMath/exp"/>
     </genClasses>
     <genClasses ecoreClass="Math.ecore#//Expression"/>
     <genClasses ecoreClass="Math.ecore#//Plus">
@@ -26,6 +29,14 @@
     <genClasses ecoreClass="Math.ecore#//Div">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//Div/left"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//Div/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Math.ecore#//Var">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//Var/id"/>
+    </genClasses>
+    <genClasses ecoreClass="Math.ecore#//Let">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//Let/var"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//Let/bind"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//Let/body"/>
     </genClasses>
     <genClasses ecoreClass="Math.ecore#//Par">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//Par/exp"/>

@@ -36,6 +36,7 @@ public class MathValidatorTest {
       _builder.append("var x = let i = y in i end");
       _builder.newLine();
       final MathExp result = this._parseHelper.parse(_builder);
+      System.out.println(this._validationTestHelper.validate(result.eResource()).size());
       int _size = this._validationTestHelper.validate(result.eResource()).size();
       boolean _greaterThan = (_size > 0);
       Assertions.assertTrue(_greaterThan);

@@ -33,6 +33,15 @@ public interface MathFactory extends EFactory
   MathExp createMathExp();
 
   /**
+   * Returns a new object of class '<em>One Math</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>One Math</em>'.
+   * @generated
+   */
+  OneMath createOneMath();
+
+  /**
    * Returns a new object of class '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -76,6 +85,24 @@ public interface MathFactory extends EFactory
    * @generated
    */
   Div createDiv();
+
+  /**
+   * Returns a new object of class '<em>Var</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var</em>'.
+   * @generated
+   */
+  Var createVar();
+
+  /**
+   * Returns a new object of class '<em>Let</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Let</em>'.
+   * @generated
+   */
+  Let createLet();
 
   /**
    * Returns a new object of class '<em>Par</em>'.

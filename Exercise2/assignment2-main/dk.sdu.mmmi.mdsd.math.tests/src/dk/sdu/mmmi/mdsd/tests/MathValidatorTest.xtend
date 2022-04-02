@@ -23,6 +23,7 @@ class MathValidatorTest {
             var y = 42
             var x = let i = y in i end
         '''.parse
+        System.out.println(result.eResource.validate.size)
         Assertions.assertTrue(result.eResource.validate.size > 0 )
     }
 }

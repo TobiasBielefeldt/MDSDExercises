@@ -3,6 +3,11 @@
  */
 package dk.sdu.mmmi.mdsd.validation
 
+import org.eclipse.xtext.validation.Check
+import dk.sdu.mmmi.mdsd.math.MathExp
+import dk.sdu.mmmi.mdsd.math.OneMath
+import java.util.HashSet
+import dk.sdu.mmmi.mdsd.math.MathPackage.Literals
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +16,21 @@ package dk.sdu.mmmi.mdsd.validation
  */
 class MathValidator extends AbstractMathValidator {
 	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MathPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+		HashSet<String> varibles = new HashSet();
+		
+		@Check
+	def checkNoRepeatedGlobalVarDeclarions(MathExp mathExp) {
+			
+		for(OneMath math : mathExp.mathExp)
+		{
+			if(varibles.contains(math.name))
+			{
+				error("RepeatedGlobal Detected, fix it! ( ͠° ͟ʖ ͡°)=ε/̵͇̿̿/'̿̿ ̿ ̿ ̿ ̿ ̿", Literals.ONE_MATH__NAME)
+                return
+			}
+			varibles.add(math.name)
+		}
+	}
+	
 	
 }

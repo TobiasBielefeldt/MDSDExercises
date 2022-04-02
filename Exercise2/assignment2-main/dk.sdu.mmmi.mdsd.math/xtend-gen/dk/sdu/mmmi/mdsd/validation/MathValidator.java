@@ -3,6 +3,13 @@
  */
 package dk.sdu.mmmi.mdsd.validation;
 
+import dk.sdu.mmmi.mdsd.math.MathExp;
+import dk.sdu.mmmi.mdsd.math.MathPackage;
+import dk.sdu.mmmi.mdsd.math.OneMath;
+import java.util.HashSet;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.validation.Check;
+
 /**
  * This class contains custom validation rules.
  * 
@@ -10,4 +17,20 @@ package dk.sdu.mmmi.mdsd.validation;
  */
 @SuppressWarnings("all")
 public class MathValidator extends AbstractMathValidator {
+  private HashSet<String> varibles = new HashSet<String>();
+  
+  @Check
+  public void checkNoRepeatedGlobalVarDeclarions(final MathExp mathExp) {
+    EList<OneMath> _mathExp = mathExp.getMathExp();
+    for (final OneMath math : _mathExp) {
+      {
+        boolean _contains = this.varibles.contains(math.getName());
+        if (_contains) {
+          this.error("RepeatedGlobal Detected, fix it! ( ͠° ͟ʖ ͡°)=ε/̵͇̿̿/\'̿̿ ̿ ̿ ̿ ̿ ̿", MathPackage.Literals.ONE_MATH__NAME);
+          return;
+        }
+        this.varibles.add(math.getName());
+      }
+    }
+  }
 }

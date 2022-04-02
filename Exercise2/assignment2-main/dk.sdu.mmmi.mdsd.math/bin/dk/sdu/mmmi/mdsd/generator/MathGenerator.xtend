@@ -18,6 +18,9 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import dk.sdu.mmmi.mdsd.math.Expression
 import dk.sdu.mmmi.mdsd.math.Num
 import dk.sdu.mmmi.mdsd.math.Par
+import dk.sdu.mmmi.mdsd.math.Let
+import dk.sdu.mmmi.mdsd.math.Var
+import dk.sdu.mmmi.mdsd.math.OneMath
 
 /**
  * Generates code from your model files on save.
@@ -27,40 +30,65 @@ import dk.sdu.mmmi.mdsd.math.Par
 class MathGenerator extends AbstractGenerator {
 
 	static Map<String, Integer> variables = new HashMap();
+	static Map<String, Integer> letVariables = new HashMap();
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val math = resource.allContents.filter(MathExp).next
 		val result = math.compute
 		
-		// You can replace with hovering, see Bettini Chapter 8
 		result.displayPanel
 	}
 	
-	//
-	// Compute function: computes value of expression
-	// Note: written according to illegal left-recursive grammar, requires fix
-	//
+	def static compute(MathExp mathExp) { 
 	
-	def static compute(MathExp math) { 
-		var value = math.exp.computeExp(new HashMap<String,Integer>)
-		var name = math.name
-		
-		variables.put(name,value)
-		
-		return variables
+		for(OneMath math : mathExp.mathExp)
+		{
+			var value = math.exp.computeExp()
+			var name = math.name	
+			variables.put(name,value)
+			letVariables.clear()
+		}
+			
+		variables
 	}
 	
-	def static int computeExp(Expression exp,Map<String,Integer> env) {
+	//This seems to work, I feel like recursion would work better 
+	//than manually doing it in the let switch, but It works ¯\_(ツ)_/¯
+	def static int computeExp(Expression exp) {
 		switch exp {
-			Plus: exp.left.computeExp(env)+exp.right.computeExp(env)
-			Minus: exp.left.computeExp(env)-exp.right.computeExp(env)
-			Mult: exp.left.computeExp(env)*exp.right.computeExp(env)
-			Div: exp.left.computeExp(env)/exp.right.computeExp(env)
+			Plus: exp.left.computeExp()+exp.right.computeExp()
+			Minus: exp.left.computeExp()-exp.right.computeExp()
+			Mult: exp.left.computeExp()*exp.right.computeExp()
+			Div: exp.left.computeExp()/exp.right.computeExp()
 			Num: exp.value
-			Par: exp.exp.computeExp(env)
+			Par: exp.exp.computeExp()
+			Var: {
+				//Make sure to check the letVaribles first 
+				//so if we have an var x and a let x it should look at the let x first (shadowing)
+				if(letVariables.get(exp.id) !== null)
+					letVariables.get(exp.id)
+				
+				else if(variables.get(exp.id) !== null)
+					variables.get(exp.id)
+						
+				}
+			Let: {
+				
+				var binding = exp.bind.computeExp()
+				letVariables.put(exp.^var,binding)
+				
+				switch exp.body{
+					Plus: exp.body.computeExp()
+					Minus: exp.body.computeExp()
+					Mult: exp.body.computeExp()
+					Div: exp.body.computeExp()
+					default: binding
+				}
+			}	
+			default: throw new Exception("Should not get down here")		
 		}
 	}
-	
+
 
 	def void displayPanel(Map<String, Integer> result) {
 		var resultString = ""

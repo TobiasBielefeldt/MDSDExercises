@@ -3,21 +3,34 @@ grammar dk.sdu.mmmi.mdsd.Math with org.eclipse.xtext.common.Terminals
 generate math "http://www.sdu.dk/mmmi/mdsd/Math"
 
 MathExp:
-	//How the hell do I allow this to take multiple?
-	//This was the most likely solution but it just replaces
+	//This was the only way to make it a list (From what I could tell anyway)
+	mathExp += OneMath*
+;
+
+OneMath:
 	'var' name=ID '=' exp=Exp
 ;
-
+//This is just what Miguel went over, but I combined + and - since they have the same precedence
 Exp returns Expression:
-	Term (( '+' {Plus.left=current} | '-' {Minus.left=current} ) right=Term )*
+	Term (( {Plus.left=current} '+' | {Minus.left=current} '-' ) right=Term )*
 ;
 
+//Also * and /
 Term returns Expression:
-	Primary (('*'{Mult.left= current}  | '/' {Div.left= current} ) right=Primary)*
+	Primary (( {Mult.left= current} '*' | {Div.left= current} '/' ) right=Primary)*
 ;
 
+//Parenthesis should have a higher precedence than * and / so I add it here with the other 'special types'
 Primary returns Expression:
-	Number | Parenthesis
+	Number | Parenthesis | VariableBinding | VariableUse
+;
+
+VariableUse returns Expression:
+	{Var} id=ID
+;
+
+VariableBinding returns Expression:
+	{Let} 'let' var = ID '=' bind=Exp 'in' body=Exp 'end'
 ;
 
 Parenthesis returns Expression:
