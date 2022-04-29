@@ -5,16 +5,12 @@ package dk.sdu.mmmi.mdsd.generator
 
 import dk.sdu.mmmi.mdsd.math.Div
 import dk.sdu.mmmi.mdsd.math.LetBinding
-import dk.sdu.mmmi.mdsd.math.MathExp
 import dk.sdu.mmmi.mdsd.math.MathNumber
 import dk.sdu.mmmi.mdsd.math.Minus
 import dk.sdu.mmmi.mdsd.math.Mult
 import dk.sdu.mmmi.mdsd.math.Plus
 import dk.sdu.mmmi.mdsd.math.VarBinding
 import dk.sdu.mmmi.mdsd.math.VariableUse
-import java.util.HashMap
-import java.util.Map
-import javax.swing.JOptionPane
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
@@ -31,24 +27,12 @@ import dk.sdu.mmmi.mdsd.math.ExternalUse
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class MathGenerator extends AbstractGenerator {
-	
-	static Map<String, Integer> variables;
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val program = resource.allContents.filter(Program).next
-		
-		val math = program.mathExp
-			
-		//val result = math.compute
-		
-			
-		fsa.generateFile(program.name + ".java",program.generateProgramCode
-			
-		)
-		
-		//This is more annoying than helpful
-		//result.displayPanel
-		
+				
+		//Generate file
+		fsa.generateFile(program.name + ".java",program.generateProgramCode)		
 	}
 		
 	def CharSequence generateProgramCode(Program program)
@@ -85,12 +69,29 @@ class MathGenerator extends AbstractGenerator {
 		
 	'''
 		
+	//A bit of a meh solution since it would give an error if an external has more than 2 arguments.
+	//That being said a easy solution would be to create an array of letters [n,m...ect] and then use those in a loop but I'm a bit lazy atm
 	def CharSequence generateExternalCode(External external)
 	'''
 	int «external.name»(«IF external.argumentLeft !== null»«external.argumentLeft» n«FOR argument: external.argumentsRight»,«argument» m«ENDFOR»«ENDIF»);
 	
 	'''
-		
+	
+	//For all expressions doing something like
+	//x = exp works
+	//But for let doing that would give a weird result using my style:
+	//x = {
+	//exp
+	//}
+	//which is illegal in java
+	//so if it is an let I need to do something else
+	//{
+	// int var = exp
+	//	x = var
+	//}
+	//To do that I created a letbinding method that takes the var varibale for use further down the code.
+	//But it does not solve nested let and im not 100% sure how to do that.
+	//Maybe by adding a letbinding check in the letbinding?
 	def dispatch CharSequence generateVariableCode(VarBinding binding,String name)
 	'''
 	«IF binding.expression.isTypeLetBinding»
@@ -98,7 +99,6 @@ class MathGenerator extends AbstractGenerator {
 	«ELSE»
 	«binding.name» = «binding.expression.generateVariableCode(binding.name)»;
 	«ENDIF»
-	
 	'''
 		
 	def boolean getIsTypeLetBinding(Expression expression)
@@ -106,8 +106,6 @@ class MathGenerator extends AbstractGenerator {
 		return expression instanceof LetBinding
 	}
 		
-
-	
 	def dispatch CharSequence generateVariableCode(MathNumber exp,String name)
 	'''«exp.value»'''
 				
@@ -137,112 +135,38 @@ class MathGenerator extends AbstractGenerator {
 	}
 	'''
 		
-		def boolean thisCheck(Expression expression){
-			if(expression instanceof Plus)
-			{
-				var exp = expression as Plus
-				return exp.left instanceof VariableUse
-			}
-			
-			if(expression instanceof Minus)
-			{
-				var exp = expression as Minus
-				return exp.left instanceof VariableUse
-			}
-			
-			if(expression instanceof Div)
-			{
-				var exp = expression as Div
-				return exp.left instanceof VariableUse
-			}
-			
-			if(expression instanceof Mult)
-			{
-				var exp = expression as Mult
-				return exp.left instanceof VariableUse
-			}
-			return false
+	def boolean thisCheck(Expression expression){
+		if(expression instanceof Plus)
+		{
+			var exp = expression as Plus
+			return exp.left instanceof VariableUse
 		}
+		
+		if(expression instanceof Minus)
+		{
+			var exp = expression as Minus
+			return exp.left instanceof VariableUse
+		}
+		
+		if(expression instanceof Div)
+		{
+		var exp = expression as Div
+			return exp.left instanceof VariableUse
+		}
+			
+		if(expression instanceof Mult)
+		{
+			var exp = expression as Mult
+			return exp.left instanceof VariableUse
+		}
+		return false
+	}
 	
 	def dispatch CharSequence generateVariableCode(ExternalUse exp,String name)
 	'''this.external.«exp.name»(«IF exp.argumentLeft !== null»«exp.argumentLeft.generateVariableCode(name)»«FOR arg: exp.argumentsRight»,«arg.generateVariableCode(name)»«ENDFOR»«ENDIF»)'''
-			
-			
-			
-			
-			
-			
-			
-			
-				
-	
-		
-				
+					
 	def CharSequence generateVariableInstantions(VarBinding binding)
 	'''
 		public int «binding.name»;
 	'''
-		
-		
-		
-		
-	def void displayPanel(Map<String, Integer> result) {
-		var resultString = ""
-		for (entry : result.entrySet()) {
-         	resultString += "var " + entry.getKey() + " = " + entry.getValue() + "\n"
-        }
-		
-		JOptionPane.showMessageDialog(null, resultString ,"Math Language", JOptionPane.INFORMATION_MESSAGE)
-	}
-	
-	def static compute(MathExp math) {
-		variables = new HashMap()
-		for(varBinding: math.variables)
-			varBinding.computeExpression()
-		variables
-	}
-	
-	def static dispatch int computeExpression(VarBinding binding) {
-		variables.put(binding.name, binding.expression.computeExpression())
-		return variables.get(binding.name)
-	}
-	
-	def static dispatch int computeExpression(MathNumber exp) {
-		exp.value
-	}
-
-	def static dispatch int computeExpression(Plus exp) {
-		exp.left.computeExpression + exp.right.computeExpression
-	}
-	
-	def static dispatch int computeExpression(Minus exp) {
-		exp.left.computeExpression - exp.right.computeExpression
-	}
-	
-	def static dispatch int computeExpression(Mult exp) {
-		exp.left.computeExpression * exp.right.computeExpression
-	}
-	
-	def static dispatch int computeExpression(Div exp) {
-		exp.left.computeExpression / exp.right.computeExpression
-	}
-
-	def static dispatch int computeExpression(LetBinding exp) {
-		exp.body.computeExpression
-	}
-	
-	def static dispatch int computeExpression(VariableUse exp) {
-		exp.ref.computeBinding
-	}
-
-	def static dispatch int computeBinding(VarBinding binding){
-		if(!variables.containsKey(binding.name))
-			binding.computeExpression()			
-		variables.get(binding.name)
-	}
-	
-	def static dispatch int computeBinding(LetBinding binding){
-		binding.binding.computeExpression
-	}
-	
 }
